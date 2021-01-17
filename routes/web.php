@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AppController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('{all}', [AppController::class, 'index'])->where('all', '^(?!admin)(?!api)(?!apiX)(?!oauth)(?!login/facebook).*$');
 
 Route::get('/', function () {
     return view('welcome');
