@@ -20,8 +20,21 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "vue": "^2.5.17",
         "vue-loader": "^15.9.5",
         "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "bootstrap-vue": "^2.16.0",
+        "css-loader": "^3.6.0",
+        "laravel-vue-pagination": "^2.3.1",
+        "materialize-css": "^1.0.0",
+        "style-loader": "^1.2.1",
+        "vue": "^2.6.11",
+        "vue-axios": "^2.1.5",
+        "vue-i18n": "*",
+        "vue-moment": "*",
+        "vue-router": "^3.4.3",
+        "vue-router-middleware": "*",
+        "vuex": "*"
     }
 }

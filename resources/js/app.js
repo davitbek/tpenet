@@ -11,6 +11,8 @@ window.Vue = require('vue').default;
 
 import Vue from 'vue';
 import Main from './Main';
+import router from './router/index';
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -33,7 +35,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
-
+    router,
     template: '<Main/>',
     components: { Main }
 });
