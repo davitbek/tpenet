@@ -38,6 +38,7 @@
         "psr-4": {
             "Api\\": "api/",
             "App\\": "app/",
+            "Traits\\": "_traits/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "LaraAreaAdmin\\": "code-area/laraarea-admin/src/",

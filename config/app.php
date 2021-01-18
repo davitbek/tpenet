@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
 
-        \LaraAreaSeo\Providers\ServiceProvider::class,
+//        \LaraAreaSeo\Providers\ServiceProvider::class,
         \LaraAreaUpload\Providers\AreaUploadServiceProvider::class
     ],
 
