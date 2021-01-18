@@ -33,7 +33,6 @@ class RouteServiceProvider extends ApiRouteServiceProvider
      */
     protected function mapApiRoutes()
     {
-        dd(1);
         $namespace = str_replace($this->basename(), '', get_class($this));
         $namespace = str_replace('Providers\\', 'Http\Controllers', $namespace);
 

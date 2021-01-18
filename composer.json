@@ -41,6 +41,7 @@
             "Traits\\": "_traits/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
+            "LaraAreaApi\\": "code-area/laraarea-api/src/",
             "LaraAreaAdmin\\": "code-area/laraarea-admin/src/",
             "LaraAreaUpload\\": "code-area/laraarea-upload/src/",
             "LaraAreaValidator\\": "code-area/laraarea-validator/src/",
