@@ -3,7 +3,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import SessionService from '../services/session';
 import { saveSession } from "../services/oauth";
-import { env } from '@/config/.env';
+// import { env } from '@/config/.env';
 
 const ApiService = {
 
