@@ -1,0 +1,41 @@
+{
+	"name": "code-area/laraarea-support",
+	"description": "Additions for laravel support",
+	"keywords": ["laravel", "support"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Codearea",
+			"email": "davitzeynalyan@laravel-helper.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"laravel/framework": "7.*"
+	},
+	"require-dev": {
+		"mockery/mockery": "^1.3.1",
+		"phpunit/phpunit": "^8.5"
+
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"LaraAreaSupport\\Providers\\LaraAreaSupportServiceProvider"
+			]
+		}
+	},
+	"suggest": {
+		"code-area/laraarea-helpers": "Useful functions"
+	},
+	"autoload": {
+		"psr-4": {
+			"LaraAreaSupport\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/"
+		}
+	}
+}

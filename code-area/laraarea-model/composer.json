@@ -1,0 +1,35 @@
+{
+	"name": "code-area/laraarea-model",
+	"description": "Additions for laravel model",
+	"keywords": ["laravel", "model"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Codearea",
+			"email": "davitzeynalyan@laravel-helper.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"laravel/framework": "7.*",
+		"code-area/laraarea-support": "10.0.*",
+		"code-area/laraarea-property": "10.0.*"
+	},
+	"require-dev": {
+		"mockery/mockery": "^1.3.1",
+		"phpunit/phpunit": "^8.5"
+	},
+	"suggest": {
+		"code-area/laraarea-helpers": "Useful functions"
+	},
+	"autoload": {
+		"psr-4": {
+			"LaraAreaModel\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/"
+		}
+	}
+}

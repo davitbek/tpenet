@@ -175,6 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
+        \LaraAreaSeo\Providers\ServiceProvider::class,
+        \LaraAreaUpload\Providers\AreaUploadServiceProvider::class
     ],
 
     /*

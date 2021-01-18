@@ -1,0 +1,34 @@
+{
+	"name": "code-area/laraarea-translation",
+	"description": "api crud with login",
+	"keywords": ["laravel", "translation"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Codearea"
+		}
+	],
+	"require": {
+		"laravel/framework": "7.*"
+	},
+	"require-dev": {
+		"mockery/mockery": "^1.3.1",
+		"phpunit/phpunit": "^8.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"LaraAreaTranslation\\": "src/"
+		},
+		"files": [
+			"src/constants.php"
+		]
+	},
+	"suggest": {
+		"code-area/laraarea-helpers": "Useful functions"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/"
+		}
+	}
+}

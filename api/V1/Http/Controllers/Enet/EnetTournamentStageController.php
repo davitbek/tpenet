@@ -1,0 +1,379 @@
+<?php
+
+namespace Api\V1\Http\Controllers\Enet;
+
+use Api\V1\Services\Enet\EnetTournamentStageService;
+use Api\V1\Transformers\Enet\EnetTournamentStageTransformer;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
+class EnetTournamentStageController  extends BaseController
+{
+    /**
+     * @var EnetTournamentStageService
+     */
+    protected $service;
+
+    /**
+     * @var EnetTournamentStageTransformer
+     */
+    protected $transformer;
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        $data = [
+            'latest' => true,
+            'columns' => [
+                'readable_id',
+                'name',
+                'league_name',
+                'country_id',
+                'sport_id',
+                'gender',
+                'start_date',
+                'end_date',
+                'image_path',
+                'image_disk',
+            ],
+            'with' => [
+                'country' => [
+                    'id',
+                    'name',
+                    'image_path',
+                    'image_disk',
+                ]
+            ],
+        ];
+        if ( empty($request->all_favorite)) {
+            $date = $request->date ? Carbon::parse($request->date) : now();
+            $data['with_count'] = [
+                'events' => function ($q) use ($date) {
+                    $q->whereDate('start_date', $date->format('Y-m-d'));
+                },
+                'events as live_events_count' => function ($q) use ($date) {
+                    $q->whereDate('start_date', Carbon::parse($date)->format('Y-m-d'))
+                        ->where('status_type', \ConstEnetStatusType::Inprogress);
+                }
+            ];
+        }
+
+        $request->merge($data);
+        return parent::index($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userFavoriteLeagues(Request $request)
+    {
+        $data = [
+            'latest' => true,
+            'columns' => [
+                'readable_id',
+                'league_name',
+                'name',
+                'country_name',
+                'image_path',
+                'image_disk',
+                'gender',
+                'start_date',
+                'end_date',
+            ],
+        ];
+        $authId = $this->getAuthId();
+        if ($authId) {
+            $config = get_auth_favorite_sport_template_config($this->getAuth());
+            if (empty($request->sport_id)) {
+                if (empty($config['own'])) {
+                    $where = ['lang' => \App::getLocale()]; // TODO correct
+                    $data['where_has'] = [
+                        'favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                    $data['where']['is_favorite'] = \ConstYesNo::YES;
+                } else {
+                    $where = ['user_id' => $authId];
+                    $data['where_has'] = [
+                        'user_favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                }
+            } else {
+                if (in_array($request->sport_id, $config['own'])) {
+                    $where = ['user_id' => $authId];
+                    $where['sport_id'] = $request->sport_id;
+                    $data['where_has'] = [
+                        'user_favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                } else {
+                    $where = ['lang' => \App::getLocale()]; // TODO correct
+                    $where['sport_id'] = $request->sport_id;
+                    $data['where_has'] = [
+                        'favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                    $data['where']['is_favorite'] = \ConstYesNo::YES;
+                }
+            }
+        } else {
+            $where = ['lang' => \App::getLocale()]; // TODO correct
+            if ($request->sport_id) {
+                $where['sport_id'] = $request->sport_id;
+            }
+            $data['where_has'] = [
+                'favorite_tournament_templates' => [
+                    'where' => $where
+                ]
+            ];
+            $data['where']['is_favorite'] = \ConstYesNo::YES;
+        }
+        $date = $request->date ? Carbon::parse($request->date) : now();
+        if ( empty($request->all_favorite)) {
+            $data['where_has']['events']['where_date']['start_date'] = $date->format('Y-m-d');
+        }
+
+        $request->merge($data);
+        return $this->index($request); // TODO: Change the autogenerated stub
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function webUserFavoriteLeagues(Request $request)
+    {
+        $data = [
+            'columns' => [
+                'id'
+            ],
+            'all' => true
+        ];
+        $authId = $this->getAuthId();
+        if ($authId) {
+            $config = get_auth_favorite_sport_template_config($this->getAuth());
+            if (empty($request->sport_id)) {
+                if (empty($config['own'])) {
+                    $where = ['lang' => \App::getLocale()]; // TODO correct
+                    $data['where_has'] = [
+                        'favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                    $data['where']['is_favorite'] = \ConstYesNo::YES;
+                } else {
+                    $where = ['user_id' => $authId];
+                    $data['where_has'] = [
+                        'user_favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                }
+            } else {
+                if (in_array($request->sport_id, $config['own'])) {
+                    $where = ['user_id' => $authId];
+                    $where['sport_id'] = $request->sport_id;
+                    $data['where_has'] = [
+                        'user_favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                } else {
+                    $where = ['lang' => \App::getLocale()]; // TODO correct
+                    $where['sport_id'] = $request->sport_id;
+                    $data['where_has'] = [
+                        'favorite_tournament_templates' => [
+                            'where' => $where
+                        ]
+                    ];
+                    $data['where']['is_favorite'] = \ConstYesNo::YES;
+                }
+            }
+        } else {
+            $where = ['lang' => \App::getLocale()]; // TODO correct
+            if ($request->sport_id) {
+                $where['sport_id'] = $request->sport_id;
+            }
+            $data['where_has'] = [
+                'favorite_tournament_templates' => [
+                    'where' => $where
+                ]
+            ];
+            $data['where']['is_favorite'] = \ConstYesNo::YES;
+        }
+        $date = $request->date ? Carbon::parse($request->date) : now();
+        if ( empty($request->all_favorite)) {
+            $data['where_has']['events']['where_date']['start_date'] = $date->format('Y-m-d');
+        }
+
+        $request->merge($data);
+        return parent::indexTransformBy($request, 'transformId');
+    }
+
+    /**
+     * @param Request $request
+     * @param $sportId
+     * @param $date
+     * @return mixed
+     * @throws \Exception
+     */
+//    public function indexBySportByDate(Request $request, $sportId, $date)
+//    {
+//        $this->service->validate(['date' => $date, 'sport_id' => $sportId], [
+//            'date' => 'required|date',
+//            'sport_id' => function($attribute, $value, $fails) {
+//                if (! EnetSport::where('id', $value)->where('is_active', \ConstYesNo::YES)->exists()) {
+//                    $fails(mobile_validation('inactive_or_invalid_sport'));
+//                }
+//            }
+//        ]);
+//
+//        $date = Carbon::parse($date);
+//        if ($date->isToday() || $date->isFuture()) {
+//            $minutes = 60 * 60;
+//        } else {
+//            $minutes = 24 * 60 * 60;
+//        }
+//
+//        $cacheKey = 'api_daily_tournament_stage_' . $sportId . '_' . $date->format('Y-m-d');
+//        return \Cache::remember($cacheKey, $minutes, function () use ($request, $sportId, $date) {
+//            $data = [
+//                'where_has' => [
+//                    'events' => [
+//                        'where' => [
+//                            'sport_id' => $sportId
+//                        ],
+//                        'where_date' => [
+//                            'start_date' => $date->format('Y-m-d')
+//                        ],
+//                    ]
+//                ],
+//                'latest' => true,
+//                'columns' => [
+//                    'readable_id',
+//                    'name',
+//                    'country_name',
+//                    'image_path',
+//                    'gender',
+//                    'start_date',
+//                    'end_date',
+//                ],
+//            ];
+//            $request->merge($data);
+//            return parent::index($request); // TODO: Change the autogenerated stub
+//        });
+//    }
+
+
+
+    /**
+     * @param Request $request
+     * @param $categoryId
+     * @param null $date
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function favoriteLeagues(Request $request, $categoryId, $date = null)
+    {
+        $this->service->validate(['date' => $date], ['date' => 'nullable|date']);
+        $items = $this->service->getLeagues($categoryId, ['is_favorite' => \ConstYesNo::YES], $date);
+        $response = $this->transformer->transform($items, $request);
+        return $this->response->success($response);
+    }
+
+    /**
+     * @param Request $request
+     * @param $sportId
+     * @param null $date
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function leaguesBySport(Request $request, $sportId, $date = null)
+    {
+        $this->service->validate(['date' => $date], ['date' => 'nullable|date']);
+        $items = $this->service->getLeagues($sportId, [], $date);
+        $response = $this->transformer->transform($items, $request);
+        return $this->response->success($response);
+    }
+
+    /**
+     * @param Request $request
+     * @param $sportId
+     * @param null $date
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function leaguesBySportCountry(Request $request, $sportId, $date = null)
+    {
+        $this->service->validate(['date' => $date], ['date' => 'nullable|date']);
+        $items = $this->service->getLeagues($sportId, [], $date);
+        $response = $this->transformer->transformLeaguesBySportCountry($items, $request);
+        return $this->response->success($response);
+    }
+
+    /**
+     * @param Request $request
+     * @param $sportId
+     * @param null $date
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function leaguesBySportCountryForWeb(Request $request, $sportId, $date = null)
+    {
+        $this->service->validate(['date' => $date], ['date' => 'nullable|date']);
+        $date = Carbon::parse($date);
+        if ($date->isPast()) {
+            $cacheTime = 24 * 60 * 60;
+        } else {
+            $cacheTime = 2 * 60;
+        }
+
+        $cacheKey = 'leaguesBySportCountryForWeb_' . $sportId . $date->format('Y_m_d');
+        $response = \Cache::remember($cacheKey, $cacheTime, function () use ($sportId, $date, $request) {
+            $items = $this->service->getLeaguesForWeb($sportId, $date, []);
+            return $this->transformer->transformLeaguesBySportCountryForWeb($items, $request);
+        });
+
+        return $this->response->success($response);
+    }
+
+    /**
+     * @param Request $request
+     * @param $followingId
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \LaraAreaApi\Exceptions\ApiException
+     */
+    public function favoriteUnFavorite(Request $request, $followingId)
+    {
+        $result = $this->service->favoriteUnFavorite($followingId);
+        $response = $this->transformer->transform($result, $request);
+        return $this->response->success($response);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \LaraAreaApi\Exceptions\ApiException
+     * @throws \LaraAreaValidator\Exceptions\ValidationException
+     */
+    public function makeInitialFavorite(Request $request)
+    {
+        $this->service->validate($request->all(), [
+            'unfavorite' => 'required_without:favorite',
+            'favorite' => 'required_without:unfavorite',
+            'sport_id' => 'required'
+        ]);
+        $result = $this->service->makeInitialFavorite($request->all());
+        $response = $this->transformer->transform($result, $request);
+        return $this->response->success($response);
+    }
+}

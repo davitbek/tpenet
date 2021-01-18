@@ -14,8 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.2",
-        "martinlindhe/laravel-vue-i18n-generator": "*"
+        "laravel/ui": "^3.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -37,9 +36,17 @@
     },
     "autoload": {
         "psr-4": {
+            "Api\\": "api/",
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "LaraAreaAdmin\\": "code-area/laraarea-admin/src/",
+            "LaraAreaUpload\\": "code-area/laraarea-upload/src/",
+            "LaraAreaValidator\\": "code-area/laraarea-validator/src/",
+            "LaraAreaModel\\": "code-area/laraarea-model/src/",
+            "LaraAreaSupport\\": "code-area/laraarea-support/src/",
+            "LaraAreaCacheManager\\": "code-area/laraarea-cache-manager/src/",
+            "LaraAreaSeo\\": "code-area/laraarea-seo/src/"
         }
     },
     "autoload-dev": {

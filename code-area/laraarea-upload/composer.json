@@ -1,0 +1,41 @@
+{
+	"name": "code-area/laraarea-upload",
+	"description": "Upload for laravel",
+	"keywords": ["laravel", "upload"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Codearea",
+			"email": "davitzeynalyan@laravel-helper.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"laravel/framework": "7.*",
+		"code-area/laraarea-validator": "10.0.*"
+	},
+	"require-dev": {
+		"mockery/mockery": "^1.3.1",
+		"phpunit/phpunit": "^8.5"
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"LaraAreaUpload\\Providers\\AreaUploadServiceProvider"
+			]
+		}
+	},
+	"suggest": {
+		"code-area/laraarea-helpers": "Useful functions"
+	},
+	"autoload": {
+		"psr-4": {
+			"LaraAreaUpload\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/"
+		}
+	}
+}
