@@ -12,6 +12,15 @@ window.Vue = require('vue').default;
 import Vue from 'vue';
 import Main from './Main';
 import router from './router/index';
+import store from './store/index';
+import VueInternationalization from 'vue-i18n';
+
+
+// import BootstrapVue from 'bootstrap-vue';
+//
+//
+// Vue.use(BootstrapVue);
+
 
 
 /**
@@ -27,6 +36,14 @@ import router from './router/index';
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+// Vue.use(VueInternationalization);
+// const lang = SessionService.get('locale');
+// export const i18n = new VueInternationalization({
+//     locale: lang,
+//     messages: Messages,
+//     fallbackLocale: 'en'
+// });
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -35,6 +52,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    store,
     router,
     template: '<Main/>',
     components: { Main }

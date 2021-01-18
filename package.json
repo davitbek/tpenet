@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "axios": "^0.21",
-        "bootstrap": "^4.0.0",
+        "bootstrap": "^4.5.0",
         "jquery": "^3.2",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
@@ -27,6 +27,7 @@
         "bootstrap-vue": "^2.16.0",
         "css-loader": "^3.6.0",
         "laravel-vue-pagination": "^2.3.1",
+        "universal-cookie": "^4.0.1",
         "materialize-css": "^1.0.0",
         "style-loader": "^1.2.1",
         "vue": "^2.6.11",

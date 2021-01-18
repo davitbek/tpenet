@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Middleware, { middleware } from 'vue-router-middleware';
 
 
 import { i18n } from "../app";
 import Login from '../pages/auth/Login';
+import Register from "../pages/auth/Register";
+import Reset from "../pages/auth/passwords/Reset";
+import Main from "../Main";
 
 Vue.use(Router);
 
@@ -19,10 +21,31 @@ const router = new Router({
             },
 
             children: [
+                // {
+                //     name: 'home',
+                //     path: '',
+                //     component: Main,
+                //     meta: {
+                //     }
+                // },
                 {
                     name: 'login',
                     path: 'login',
                     component: Login,
+                    meta: {
+                    }
+                },
+                {
+                    name: 'register',
+                    path: 'register',
+                    component: Register,
+                    meta: {
+                    }
+                },
+                {
+                    name: 'reset',
+                    path: 'reset-password',
+                    component: Reset,
                     meta: {
                     }
                 },
@@ -31,28 +54,4 @@ const router = new Router({
     ]
 });
 
-const authenticated = () => {
-    return (!!SessionService.get('token') || !!SessionService.get('refreshToken'));
-};
-
-Vue.use(Middleware, {
-    router,
-    middlewares: {
-        guest(params, to, from, next) {
-            if (authenticated()) {
-                next({ name: 'home' });
-            } else {
-                next();
-            }
-        },
-        auth(params, to, from, next) {
-            if (authenticated()) {
-                next();
-            } else {
-                next({ name: 'login' })
-            }
-        },
-    },
-});
-
-export default router;
+export default router
