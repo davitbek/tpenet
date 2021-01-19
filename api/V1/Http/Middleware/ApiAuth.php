@@ -3,6 +3,7 @@
 namespace Api\V1\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Lcobucci\JWT\Parser;
 use LaraAreaApi\Http\Responses\BaseApiResponse;
 
@@ -37,7 +38,7 @@ class ApiAuth
         $header = str_replace('Bearer ', '', $header);
 
         try {
-            $token = (new Parser())->parse($header);
+            $token = (App::make(Parser::class))->parse($header);
             $accessTokenId = $token->getClaim('jti');
             if (\DB::table('oauth_access_tokens')->where('id', $accessTokenId)->exists()) {
                 $code = config('laraarea_api.error_codes.access_token_expired');

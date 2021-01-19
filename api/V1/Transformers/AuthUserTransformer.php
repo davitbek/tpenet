@@ -2,24 +2,9 @@
 
 namespace Api\V1\Transformers;
 
-use Api\V1\Models\AuthUser;
-use Illuminate\Http\Request;
+use \LaraAreaApi\Transformers\AuthTransformer as BaseAuthTransformer;
 
-class AuthUserTransformer extends \LaraAreaApi\Transformers\AuthTransformer
+class AuthUserTransformer extends BaseAuthTransformer
 {
-    /**
-     * @param AuthUser $model
-     * @param Request|null $request
-     * @return mixed
-     */
-    public function toArray($model, ? Request $request = null)
-    {
-        $response = $model->toArray();
 
-        if ($model->hasAttribute('access_tokens')) {
-            $response['access_tokens'] = $model->access_tokens;
-        }
-
-        return $response;
-    }
 }

@@ -1,21 +1,21 @@
 <?php
 
-Route::post('auth/register', 'AuthUserController@register');
-Route::post('auth/activate', 'AuthUserController@activate');
-Route::post('auth/login', 'AuthUserController@login');
-Route::post('auth/login/refresh', 'AuthUserController@refreshToken');
-//Route::post('auth/login-by-token', 'AuthUserController@login');
-Route::post('auth/social-login', 'AuthUserController@socialLogin');
-Route::post('auth/apple-login', 'AuthUserController@appleLogin');
-Route::post('auth/password/forgot', 'AuthUserController@forgotPassword');
-Route::post('auth/password/reset', 'AuthUserController@resetPassword');
-Route::get('auth/user/enet-leagues/favorite', 'Enet\EnetTournamentStageController@userFavoriteLeagues');
+use Illuminate\Support\Facades\Route;
+use Api\V1\Http\Controllers\AuthUserController;
+use Api\V1\Http\Middleware\ApiAuth;
 
-Route::middleware(\Api\V1\Http\Middleware\ApiAuth::class)->group(function () {
+Route::post('auth/register', [AuthUserController::class, 'register']);
+Route::post('auth/activate', [AuthUserController::class, 'activate']);
+Route::post('auth/login', [AuthUserController::class, 'login']);
+Route::post('auth/login/refresh', [AuthUserController::class, 'refreshToken']);
+Route::post('auth/password/forgot', [AuthUserController::class, 'forgotPassword']);
+Route::post('auth/password/reset', [AuthUserController::class, 'resetPassword']);
+
+Route::middleware(ApiAuth::class)->group(function () {
     // @TODO make route aliases
     // TODO  delete auth/user/
-    Route::get('auth/user', 'AuthUserController@getAuthUser');
-    Route::put('auth/user/update', 'AuthUserController@updateAuth');
-    Route::put('auth/user/update/password', 'AuthUserController@updateAuthPassword');
-    Route::delete('auth/user/delete', 'AuthUserController@deleteAuth');
+    Route::get('auth/user', [AuthUserController::class, 'getAuthUser']);
+    Route::put('auth/user/update', [AuthUserController::class, 'updateAuth']);
+    Route::put('auth/user/update/password', [AuthUserController::class, 'updateAuthPassword']);
+    Route::delete('auth/user/delete', [AuthUserController::class, 'deleteAuth']);
 });

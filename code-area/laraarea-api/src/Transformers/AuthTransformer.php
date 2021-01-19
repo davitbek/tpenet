@@ -14,6 +14,12 @@ class AuthTransformer extends Transformer
      */
     public function transformRegistered($model, Request $request)
     {
-        return $this->toArray($model, $request);
+        $response = $this->toArray($model, $request);
+
+        if ($model->hasAttribute('access_tokens')) {
+            $response['access_tokens'] = $model->access_tokens;
+        }
+
+        return $response;
     }
 }
