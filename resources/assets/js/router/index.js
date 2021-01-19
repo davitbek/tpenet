@@ -6,7 +6,6 @@ import { i18n } from "../app";
 import Login from '../pages/auth/Login';
 import Register from "../pages/auth/Register";
 import Reset from "../pages/auth/passwords/Reset";
-import Main from "../Main";
 import Home from "../pages/home/Home";
 
 Vue.use(Router);
@@ -24,7 +23,7 @@ const router = new Router({
             children: [
                 {
                     name: 'home',
-                    path: '',
+                    path: '/',
                     component: Home,
                     meta: {
                     }
