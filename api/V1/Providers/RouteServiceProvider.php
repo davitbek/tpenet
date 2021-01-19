@@ -3,7 +3,6 @@
 namespace Api\V1\Providers;
 
 use Api\V1\Http\Middleware\ApiAuthHeader;
-use App\Http\Middleware\ApiLocalization;
 use LaraAreaApi\Providers\RouteServiceProvider as ApiRouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +12,6 @@ class RouteServiceProvider extends ApiRouteServiceProvider
      * @var array
      */
     protected $includeMiddlewares = [
-        ApiLocalization::class
     ];
 
     /**

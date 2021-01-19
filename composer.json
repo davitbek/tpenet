@@ -13,6 +13,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
+        "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2"
     },
@@ -42,10 +43,12 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "LaraAreaApi\\": "code-area/laraarea-api/src/",
+            "LaraAreaProperty\\": "code-area/laraarea-property/src/",
             "LaraAreaAdmin\\": "code-area/laraarea-admin/src/",
             "LaraAreaUpload\\": "code-area/laraarea-upload/src/",
             "LaraAreaValidator\\": "code-area/laraarea-validator/src/",
             "LaraAreaModel\\": "code-area/laraarea-model/src/",
+            "LaraAreaTransformer\\": "code-area/laraarea-transformer/src/",
             "LaraAreaSupport\\": "code-area/laraarea-support/src/",
             "LaraAreaCacheManager\\": "code-area/laraarea-cache-manager/src/",
             "LaraAreaSeo\\": "code-area/laraarea-seo/src/"
