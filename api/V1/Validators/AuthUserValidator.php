@@ -2,7 +2,7 @@
 
 namespace Api\V1\Validators;
 
-class AuthValidator extends BaseValidator
+class AuthUserValidator extends BaseValidator
 {
     /**
      * @return array
@@ -14,7 +14,6 @@ class AuthValidator extends BaseValidator
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['required', 'string', 'min:8'],
-            'country' => ['string', 'max:100']
         ];
     }
 }
