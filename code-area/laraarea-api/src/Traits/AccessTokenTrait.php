@@ -5,6 +5,7 @@ namespace LaraAreaApi\Traits;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
 use LaraAreaApi\Exceptions\ApiAuthTokenException;
+use LaraAreaApi\Models\ApiAuth;
 use Laravel\Passport\Passport;
 
 trait AccessTokenTrait
@@ -31,17 +32,20 @@ dd(12);
     }
 
     /**
-     * @param $user
-     * @param int $days
-     * @param false $forceLogin
-     * @return mixed
+     * @param ApiAuth $user
+     * @param null $days
+     * @return \Laravel\Passport\PersonalAccessTokenResult
      */
-    public function createAccessToken($user, $days = 30)
+    public function createToken(ApiAuth $user, $days = null)
     {
         $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        $token->expires_at = Carbon::now()->addDays($days);
-        $token->save();
+
+        if ($days) {
+            $token = $tokenResult->token;
+            $token->expires_at = Carbon::now()->addDays($days);
+            $token->save();
+        }
+
         return $tokenResult;
     }
 
