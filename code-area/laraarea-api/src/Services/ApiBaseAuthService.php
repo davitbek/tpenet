@@ -3,6 +3,7 @@
 namespace LaraAreaApi\Services;
 
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Hashing\HashManager;
 use Illuminate\Support\Facades\App;
@@ -52,6 +53,7 @@ class ApiBaseAuthService extends ApiBaseService
     public function register($data)
     {
         $this->validateRegister($data);
+        DB::beginTransaction();;
         $user = $this->_register($data);
         if (!empty($data[$this->queryParams['get_access_tokens']])) {
             $accessTokens = $this->getLoginTokens($data);
@@ -63,7 +65,7 @@ class ApiBaseAuthService extends ApiBaseService
 
     /**
      * @param $data
-     * @return ApiAuth
+     * @return  \Illuminate\Database\Eloquent\Builder|Model|ApiAuth
      */
     public function _register($data)
     {
@@ -74,7 +76,7 @@ class ApiBaseAuthService extends ApiBaseService
             $qpPassword => $this->bcriptPassword($data[$qpPassword]),
         ];
         $userData = array_merge($userData, $this->fixDataForRegister($data));
-        return $this->model->create($userData);
+        return $this->_create($userData);
     }
 
     /**
@@ -83,7 +85,7 @@ class ApiBaseAuthService extends ApiBaseService
      */
     protected function fixDataForRegister($data)
     {
-        return [];
+        return $data;
     }
 
     /**
@@ -397,7 +399,7 @@ class ApiBaseAuthService extends ApiBaseService
             $columns[] = $qpPassword;
             $columns = array_unique($columns);
         }
-        
+
         $user = $this->model->where($qpUserName, $data[$qpUserName])
             ->first($columns);
         if (empty($user)) {
