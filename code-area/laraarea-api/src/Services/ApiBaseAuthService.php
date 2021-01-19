@@ -53,13 +53,14 @@ class ApiBaseAuthService extends ApiBaseService
     public function register($data)
     {
         $this->validateRegister($data);
-        DB::beginTransaction();;
+        DB::beginTransaction();
         $user = $this->_register($data);
         if (!empty($data[$this->queryParams['get_access_tokens']])) {
             $accessTokens = $this->getLoginTokens($data);
             $user->setAttribute('access_tokens', $accessTokens);
         }
         event(new AuthRegistered($user));
+        DB::commit();
         return $user;
     }
 
