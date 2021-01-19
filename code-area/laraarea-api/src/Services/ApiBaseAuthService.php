@@ -54,14 +54,12 @@ class ApiBaseAuthService extends ApiBaseService
     public function register($data)
     {
         $this->validateRegister($data);
-        DB::beginTransaction();
         $user = $this->_register($data);
         if (!empty($data[$this->queryParams['get_access_tokens']])) {
             $accessTokens = $this->getLoginTokens($data);
             $user->setAttribute('access_tokens', $accessTokens);
         }
         event(new AuthRegistered($user));
-        DB::commit();
         return $user;
     }
 
@@ -77,7 +75,7 @@ class ApiBaseAuthService extends ApiBaseService
             $qpUserName => $data[$qpUserName],
             $qpPassword => $this->bcriptPassword($data[$qpPassword]),
         ];
-        $userData = array_merge($userData, $this->fixDataForRegister($data));
+        $userData = array_merge($this->fixDataForRegister($data), $userData);
         return $this->_create($userData);
     }
 
@@ -188,7 +186,7 @@ class ApiBaseAuthService extends ApiBaseService
         $tokens = $response->json();
         if (! key_exists('access_token', $tokens)) {
             // @TODO auth failure code
-            throw new ApiAuthTokenException(laraarea_api_error_code('access_token'), mobile_validation('auth_failure'), $tokens);
+            throw new ApiAuthTokenException(laraarea_api_error_code('access_token'), 'auth_failure', $tokens);
         }
 
         return $tokens;

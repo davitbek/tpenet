@@ -155,7 +155,7 @@ class ApiBaseService
     {
         $with = Arr::pull($data, 'with', []);
         $data = $this->fixDataForCreate($data);
-        $item =  $this->model->create($data);
+        $item = $this->model->create($data);
 
         if (is_a($item, get_class($this->model))) {
             $this->createRelations($item, $with);
