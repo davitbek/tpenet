@@ -19,6 +19,7 @@ use LaraAreaApi\Events\SocialAuthLogin;
 use LaraAreaApi\Exceptions\ApiAuthTokenException;
 use LaraAreaApi\Exceptions\ApiException;
 use LaraAreaApi\Models\ApiAuth;
+use Illuminate\Support\Facades\Http;
 
 class ApiBaseAuthService extends ApiBaseService
 {
@@ -176,28 +177,15 @@ class ApiBaseAuthService extends ApiBaseService
         } elseif (!empty($data[$this->queryParams['remember_days']])) {
             Passport::tokensExpireIn(now()->addDays($data[$this->queryParams['remember_days']]));
         }
-
-        $host = request()->getHost(); // TODO improve
-        $tokenRequest = Request::create(
-            '/oauth/token',
-            'post', [
+        $response = Http::asForm()->post(url('/oauth/token'), [
             'grant_type' => 'password',
-            'client_id' => env('O_AUTH_CLIENT_ID'),
-            'client_secret' => env('O_AUTH_CLIENT_SECRET'),
+            'client_id' => config('laraarea_api.auth.client_id'),
+            'client_secret' => config('laraarea_api.auth.client_secret'),
             'username' => $data[$this->queryParams['username']],
             'password' => $data[$this->queryParams['password']],
             'scope' => '',
-        ],
-            [],
-            [],
-            [
-                'SERVER_NAME' => $host,
-                'HTTP_HOST' => $host,
-            ]
-        );
-        $tokenRequest = clone $tokenRequest;
-        $response = app()->handle($tokenRequest);
-        $tokens = json_decode((string) $response->getContent(), true);
+        ]);
+        $tokens = $response->json();
         if (! key_exists('access_token', $tokens)) {
             // @TODO auth failure code
             throw new ApiAuthTokenException(laraarea_api_error_code('access_token'), mobile_validation('auth_failure'), $tokens);
